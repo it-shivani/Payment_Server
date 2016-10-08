@@ -18,7 +18,7 @@ public interface UserService {
 	 * @param user
 	 * @return
 	 */
-	public boolean addUser(User user);
+	public Integer addUser(User user);
 
 	/**
 	 * update a user

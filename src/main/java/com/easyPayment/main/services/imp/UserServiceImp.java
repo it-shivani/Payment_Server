@@ -1,40 +1,49 @@
 package com.easyPayment.main.services.imp;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.easyPayment.main.daos.UserDao;
 import com.easyPayment.main.domains.User;
 import com.easyPayment.main.services.UserService;
 
 @Service
+@Transactional
 public class UserServiceImp implements UserService {
-	
+
 	@Autowired
-	UserDao userDao ;
+	UserDao userDao;
 
 	@Override
 	public User getUserInfo(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		User result = userDao.getUser(user);
+		return result;
 	}
 
 	@Override
-	public boolean addUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public Integer addUser(User user) {
+		user.setCreateAt(new Date());
+		Integer result = userDao.insertUser(user);
+		return result;
 	}
 
 	@Override
 	public boolean updateUser(User user) {
-		// TODO Auto-generated method stub
-		return false;
+		user.setUpdateAt(new Date());
+		boolean result = userDao.updateUser(user);
+		return result;
 	}
 
 	@Override
 	public boolean deleteUser(Integer userId) {
-		// TODO Auto-generated method stub
-		return false;
+		User user = new User();
+		user.setId(userId);
+		user.setDeleteAt(new Date());
+		boolean result = userDao.updateUser(user);
+		return result;
 	}
 
 }

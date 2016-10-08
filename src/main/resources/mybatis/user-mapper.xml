@@ -18,7 +18,7 @@
 	</resultMap>
 
 	<select id="getUser" parameterType="User" resultMap="userResultMap">
-		select * from user where 1=1
+		select * from USER where 1=1
 		<if test="id != null">
 				and ID = #{id}
 		</if>
@@ -47,5 +47,29 @@
 				and DELETE_AT = #{deleteAt}
 		</if>
 	</select>
+	
+	<update id="updateUser" parameterType="User" >
+		update USER 
+		<trim prefix="SET" suffixOverrides=",">
+ 			 <if test="firstName != null">FIRST_NAME = #{firstName}</if>
+ 			 <if test="lsetName != null">LAST_NAME = #{lsetName}</if>
+ 			 <if test="email != null">EMAIL = #{email}</if>
+ 			 <if test="phone != null">PHONE = #{phone}</if>
+ 			 <if test="password != null">PASSWORD = #{password}</if>
+ 			 <if test="salt != null">SALT = #{salt}</if>
+ 			 <if test="updateAt != null">UPDATE_AT = #{updateAt}</if>
+ 			 <if test="deleteAt != null">DELETE_AT = #{deleteAt}</if>
+		</trim>	
+		where ID = #{id}
+	</update>
+	
+	<insert id="insertUser" parameterType="User">
+		insert into USER (ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE,PASSWORD,SALT,CREATE_AT)
+		values(0,#{firstName},#{lsetName},#{email},#{phone},#{password}, #{salt}, #{createAt})
+		<selectKey resultType="int" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+	
+	</insert>
 
 </mapper>
