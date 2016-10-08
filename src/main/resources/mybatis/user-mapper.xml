@@ -40,13 +40,15 @@
 		<if test="salt != null">
 				and SALT = #{salt}
 		</if>
-		<if test="deleteAt == null">
+		 
+	</select>
+	
+	<!-- <if test="deleteAt == null">
 				and DELETE_AT = null
 		</if>
 		<if test="deleteAt != null">
 				and DELETE_AT = #{deleteAt}
-		</if>
-	</select>
+		</if> -->
 	
 	<update id="updateUser" parameterType="User" >
 		update USER 
