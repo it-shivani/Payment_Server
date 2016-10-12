@@ -1,0 +1,83 @@
+package com.easyPayment.main.controllers.rest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.easyPayment.main.domains.User;
+import com.easyPayment.main.services.UserService;
+import com.easyPayment.main.utils.ReturnObject;
+
+@RestController
+@RequestMapping("user")
+public class UserREST {
+
+	@Autowired
+	UserService userService;
+
+	/**
+	 * get user information by user ID-- https://domain.com/user/15
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnObject getName(@PathVariable Integer id) {
+		User tc = new User();
+		tc = userService.getUserInfo(tc, false);
+		ReturnObject ro = new ReturnObject(true, "", 1, tc);
+		return ro;
+	}
+
+	/**
+	 * add a new user-- https://domain.com/user/
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnObject saveUser(@RequestParam(value = "firstName") String firstName,
+			@RequestParam(value = "lastName") String lastName, @RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone, @RequestParam(value = "password") String password) {
+		User user = new User();
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
+		user.setPassword(password);
+		user.setPhone(phone);
+		boolean success = false;
+		String message = "Email address exist";
+		if (!user.check()) {
+			message = user.getMessage();
+			ReturnObject rb = new ReturnObject(success, message, 0, user);
+			return rb;
+		} else {
+			Integer id = userService.addUser(user);
+			if (id == null) {
+				message = "internal error";
+			} else if (id > 0) {
+				success = true;
+				message = "save success";
+			}
+			user.setId(id);
+			ReturnObject rb = new ReturnObject(success, message, 0, user);
+			return rb;
+		}
+	}
+
+	/**
+	 * login https://domain.com/user/login/
+	 */
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnObject login(@RequestParam(value = "email") String email, @RequestParam(value = "phone") String phone,
+			@RequestParam(value = "password") String password) {
+		User user = new User();
+		user.setEmail(email);
+		user.setPassword(password);
+		boolean check = userService.checkUser(user);
+		ReturnObject rb = new ReturnObject(check, "", 0, null);
+		return rb;
+	}
+
+}

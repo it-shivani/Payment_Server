@@ -9,7 +9,7 @@
 
 	<task:scheduled-tasks scheduler="myScheduler">
 		<task:scheduled ref="testTask" method="reportCurrentTime"
-			fixed-delay="5000" />
+			fixed-delay="50000" />
 	</task:scheduled-tasks>
 
 	<task:scheduler id="myScheduler" />

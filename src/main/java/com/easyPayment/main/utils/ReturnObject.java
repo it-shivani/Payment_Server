@@ -1,36 +1,49 @@
 package com.easyPayment.main.utils;
 
 /**
- * return object (json)
+ * return object 
  * @author zhao_zl_
  *
  */
 public class ReturnObject {
-	private String statue;
-	private String message;
-	private String objKey;
-	private String obj;
-
-	/**
-	 * 
-	 * @param statue
-	 *            return status true or false
-	 * @param message
-	 *            return message , can be null
-	 * @param objKey
-	 *            return object key name, can be null
-	 * @param obj
-	 *            return object , can be null
-	 */
-	public ReturnObject(String statue, String message, String objKey, String obj) {
-		this.statue = statue;
-		this.message = message == null ? "" : message;
-		this.objKey = objKey == null ? "key" : objKey;
-		this.obj = obj == null ? "" : obj;
+	private boolean success;
+	private String info;
+	private int count;
+	private Object result;
+	
+	
+	
+	public ReturnObject(boolean success, String info, int count, Object result) {
+		super();
+		this.success = success;
+		this.info = info;
+		this.count = count;
+		this.result = result;
+	}
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public Object getResult() {
+		return result;
+	}
+	public void setResult(Object result) {
+		this.result = result;
 	}
 
-	@Override
-	public String toString() {
-		return "{\"success\":\"" + statue + "\", \"message\":\"" + message + "\", \"" + objKey + "\":\"" + obj + "\"}";
-	}
+	
 }

@@ -17,6 +17,32 @@ public class User implements Serializable {
 	private Date updateAt;
 	private Date deleteAt;
 	
+	private String message;
+	public boolean check(){
+		if(firstName == null){
+			message = "first name is needed";
+			return false;
+		}
+		if(lastName == null){
+			message = "last name is needed";
+			return false;
+		}
+		if(email == null){
+			message = "email is needed";
+			return false;
+		}	
+		return true;
+	}
+	
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public Integer getId() {
 		return id;
 	}
