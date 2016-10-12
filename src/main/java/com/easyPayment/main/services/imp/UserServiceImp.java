@@ -28,17 +28,17 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public Integer addUser(User user) {
-		//check user
+		// check user
 		User temp = new User();
 		temp.setEmail(user.getEmail());
-		if(checkUser(temp)){
+		if (checkUser(temp)) {
 			return 0;
 		}
 		user.setCreateAt(new Date());
 		String password = user.getPassword();
-		//4 digital salt
+		// 4 digital salt
 		String salt = MD5Util.randomSalt();
-		password = MD5Util.MD5Encryption(password+salt);
+		password = MD5Util.MD5Encryption(password + salt);
 		user.setSalt(salt);
 		user.setPassword(password);
 		Integer result = userDao.insertUser(user);
@@ -63,6 +63,11 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public boolean newRelation(Integer user1, Integer user2, String relationType) {
+		List<Integer> relations = userDao.getRelationList(user1);
+		// check user2 if already is a friend
+		if (relations.contains(user2)) {
+			return true;
+		}
 		boolean result = userDao.newUserRelation(user1, user2, relationType);
 		return result;
 	}

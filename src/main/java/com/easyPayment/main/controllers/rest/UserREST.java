@@ -1,5 +1,7 @@
 package com.easyPayment.main.controllers.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ public class UserREST {
 	UserService userService;
 
 	/**
-	 * get user information by user ID-- https://domain.com/user/15
+	 * get user information by user ID-- https://domain.com/user/{id}
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
@@ -37,8 +39,10 @@ public class UserREST {
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
 	public ReturnObject saveUser(@RequestParam(value = "firstName") String firstName,
-			@RequestParam(value = "lastName") String lastName, @RequestParam(value = "email") String email,
-			@RequestParam(value = "phone") String phone, @RequestParam(value = "password") String password) {
+			@RequestParam(value = "lastName") String lastName, 
+			@RequestParam(value = "email") String email,
+			@RequestParam(value = "phone") String phone, 
+			@RequestParam(value = "password") String password) {
 		User user = new User();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -70,7 +74,8 @@ public class UserREST {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public ReturnObject login(@RequestParam(value = "email") String email, @RequestParam(value = "phone") String phone,
+	public ReturnObject login(@RequestParam(value = "email") String email, 
+			@RequestParam(value = "phone") String phone,
 			@RequestParam(value = "password") String password) {
 		User user = new User();
 		user.setEmail(email);
@@ -79,5 +84,42 @@ public class UserREST {
 		ReturnObject rb = new ReturnObject(check, "", 0, null);
 		return rb;
 	}
+
+	/**
+	 * add a new relation https://domain.com/user/relations
+	 */
+	@RequestMapping(value = "/relations", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnObject newRelation(@RequestParam(value = "userId") String userId,
+			@RequestParam(value = "friendId") String friendId, 
+			@RequestParam(value = "type") String type) {
+		boolean result = userService.newRelation(Integer.parseInt(userId), Integer.parseInt(friendId), type);
+		ReturnObject rb = new ReturnObject(result, "", 0, null);
+		return rb;
+	}
+	
+	/**
+	 * delete a relationship https://domain.com/user/relations
+	 */
+	@RequestMapping(value = "/relations", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ReturnObject deleteRelation(@RequestParam(value = "userId") String userId,
+			@RequestParam(value = "friendId") String friendId){
+		boolean result = userService.deleteRelation(Integer.parseInt(userId), Integer.parseInt(friendId));
+		ReturnObject rb = new ReturnObject(result, "", 0, null);
+		return rb;
+	}
+	
+	/**
+	 * get relations list https://domain.com/user/relations/{id}
+	 */
+	@RequestMapping(value = "/relations/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnObject getRelations(@PathVariable Integer id){
+		List<User> friends = userService.getRelationList(id);
+		ReturnObject rb = new ReturnObject(true, "", 0, friends);
+		return rb;
+	}
+	
 
 }
