@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easyPayment.eastPayAcc">
+
+	<resultMap type="EasyPayAccount" id="easyPayAccountResultMap">
+		<result property="id" column="ID" />
+		<result property="balance" column="BALANCE" />
+		<result property="userId" column="USER_ID" />
+		<result property="acctNo" column="ACCT_NO" />
+	</resultMap>
+
+	<select id="getAccInfo"  parameterType="int" resultMap="easyPayAccountResultMap">
+		select * from EASY_PAY_ACCOUNT where USER_ID = #{userId}
+	</select>
+	
+	<insert id="addAcct" parameterType="EasyPayAccount">
+		insert into EASY_PAY_ACCOUNT (ID, BALANCE, USER_ID, ACCT_NO)
+		values(0, #{balance}, #{userId}, #{acctNo},)
+		<selectKey resultType="int" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<update id="updateAcct" parameterType="EasyPayAccount">
+		update EASY_PAY_ACCOUNT
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="balance != null">BALANCE = #{balance}</if>
+			<if test="acctNo != null">ACCT_NO = #{acctNo}</if>
+		</trim>
+		where ID = #{id}
+	</update>
+
+</mapper>

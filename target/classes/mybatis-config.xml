@@ -6,10 +6,12 @@
 	
 	<typeAliases>
 		<typeAlias alias="User" type="com.easyPayment.main.domains.User" />
+		<typeAlias alias="EasyPayAccount" type="com.easyPayment.main.domains.EasyPayAccount" />
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="mybatis/user-mapper.xml" />
+		<mapper resource="mybatis/eastPayAcc-mapper.xml" />
 	</mappers>
 
 </configuration>
