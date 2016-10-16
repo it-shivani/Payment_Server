@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.easyPayment.main.daos.UserDao;
+import com.easyPayment.main.domains.EasyPayAccount;
 import com.easyPayment.main.domains.User;
+import com.easyPayment.main.services.EasyPayAcctService;
 import com.easyPayment.main.services.UserService;
 import com.easyPayment.main.utils.MD5Util;
 
@@ -19,6 +21,9 @@ public class UserServiceImp implements UserService {
 
 	@Autowired
 	UserDao userDao;
+
+	@Autowired
+	EasyPayAcctService easyPayAcctService;
 
 	@Override
 	public User getUserInfo(User user, boolean needPassword) {
@@ -42,6 +47,14 @@ public class UserServiceImp implements UserService {
 		user.setSalt(salt);
 		user.setPassword(password);
 		Integer result = userDao.insertUser(user);
+		if (result > 0) {
+			// add an easy Pay Account
+			EasyPayAccount epa = new EasyPayAccount();
+			epa.setBalance(0.0d);
+			epa.setUserId(result);
+			epa.setAcctNo("");
+			easyPayAcctService.addNewAcct(epa);
+		}
 		return result;
 	}
 
