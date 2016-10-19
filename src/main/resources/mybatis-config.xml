@@ -7,11 +7,13 @@
 	<typeAliases>
 		<typeAlias alias="User" type="com.easyPayment.main.domains.User" />
 		<typeAlias alias="EasyPayAccount" type="com.easyPayment.main.domains.EasyPayAccount" />
+		<typeAlias alias="Transaction" type="com.easyPayment.main.domains.Transaction" />
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="mybatis/user-mapper.xml" />
 		<mapper resource="mybatis/eastPayAcc-mapper.xml" />
+		<mapper resource="mybatis/transaction-mapper.xml" />
 	</mappers>
 
 </configuration>

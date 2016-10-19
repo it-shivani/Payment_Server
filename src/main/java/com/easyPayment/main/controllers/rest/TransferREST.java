@@ -1,5 +1,6 @@
 package com.easyPayment.main.controllers.rest;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,18 @@ public class TransferREST {
 			@RequestParam(value = "user2") String user2,
 			@RequestParam(value = "token") String token){
 		
+		return null;
+	}
+	
+	@RequestMapping(value = "/{transerId}", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnObject getTransferDetail(@PathVariable Integer transerId){
+		return null;
+	}
+	
+	@RequestMapping(value = "/{userId}", method = RequestMethod.PATCH)
+	@ResponseBody
+	public ReturnObject getTransferList(@PathVariable Integer transerId){
 		return null;
 	}
 

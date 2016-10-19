@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easyPayment.transaction">
+
+	<resultMap type="Transaction" id="transactionResultMap">
+		<result property="id" column="ID" />
+		<result property="balance" column="BALANCE" />
+		<result property="userId" column="USER_ID" />
+		<result property="fromAcct" column="FROM_ACCT_ID" />
+		<result property="postTime" column="POST_TIME" />
+		<result property="description" column="DESCRIPTION" />
+		<result property="type" column="TYPE" />
+		<result property="status" column="STATUS" />
+		<result property="amount" column="AMOUNT" />
+		<result property="toAcct" column="TO_ACCOUNT_ID" />
+	</resultMap>
+
+	<insert id="newTransaction" parameterType="Transaction">
+		insert into TRANSACTIONS (ID,BALANCE,USER_ID,FROM_ACCT_ID,POST_TIME,
+			DESCRIPTION,TYPE,STATUS,AMOUNT,TO_ACCOUNT_ID)
+		values(0,#{balance},#{userId},#{fromAcct},#{postTime},#{description},
+			#{type},#{status},#{amount},#{toAcct})
+			<selectKey resultType="int" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<select id="getTransactions" parameterType="Transaction" resultMap="transactionResultMap">
+		select * from TRANSACTIONS where 1=1
+		<if test="id != null">
+			and ID = #{id}
+		</if>
+		<if test="userId != null">
+			and USER_ID = #{userId}
+		</if>
+		<if test="fromAcct != null">
+			and FROM_ACCT_ID = #{fromAcct}
+		</if>
+		<if test="type != null">
+			and TYPE = #{type}
+		</if>
+		<if test="status != null">
+			and STATUS = #{status}
+		</if>
+		<if test="amount != null">
+			and AMOUNT = #{amount}
+		</if>
+		<if test="toAcct != null">
+			and TO_ACCOUNT_ID = #{toAcct}
+		</if>
+	</select>
+
+</mapper>
