@@ -5,14 +5,14 @@ import java.util.Date;
 public class Transaction {
 	private Integer id;
 	private double balance;
-	private Integer userId;
-	private String fromAcct;
+	private Integer userId; // user id who send the money 
+	private String fromAcct; // can be empty
 	private Date postTime;
 	private String description;
 	private String type;
 	private String status;
 	private double amount;
-	private Integer toAcct;
+	private Integer toAcct; // User id which who get the money
 	
 	
 	public Integer getToAcct() {
