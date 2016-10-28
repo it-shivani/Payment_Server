@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easyPayment.userBankAccount">
+
+	<resultMap type="UserBankAccount" id="userBankAccountResultMap">
+		<result property="id" column="ID" />
+		<result property="balance" column="BALANCE" />
+		<result property="user.id" column="USER_ID" />
+		<result property="accountNumber" column="ACCT_NO" />
+		<result property="bankName" column="BANK_NAME" />
+		<result property="swiftCode" column="SWIFT_CODE" />
+		<result property="country" column="COUNTRY" />
+	</resultMap>
+
+	<select id="getUserBankAccount" parameterType="UserBankAccount" resultMap="userBankAccountResultMap">
+		select * from USER_BANK_ACCOUNT where 1=1
+		<if test="id != null">
+			and ID = #{id}
+		</if>
+		<if test="balance != null">
+			and BALANCE = #{balance}
+		</if>
+		<if test="user.id != null">
+			and USER_ID = #{user.id}
+		</if>
+		<if test="accountNumber != null">
+			and ACCT_NO = #{accountNumber}
+		</if>
+		<if test="bankName != null">
+			and BANK_NAME = #{bankName}
+		</if>
+		<if test="swiftCode != null">
+			and SWIFT_CODE = #{swiftCode}
+		</if>
+		<if test="country != null">
+			and COUNTRY = #{country}
+		</if>
+
+	</select>
+
+	<!-- <if test="deleteAt == null"> and DELETE_AT = null </if> <if test="deleteAt 
+		!= null"> and DELETE_AT = #{deleteAt} </if> -->
+
+	<update id="updateUserBankAccount" parameterType="UserBankAccount">
+		update USER_BANK_ACCOUNT
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="id != null">ID = #{id}</if>
+			<if test="balance != null">BALANCE = #{balance}</if>
+			<if test="user.id != null">USER_ID = #{user.id}</if>
+			<if test="accountNumber != null">ACCT_NO = #{accountNumber}</if>
+			<if test="bankName != null">BANK_NAME = #{bankName}</if>
+			<if test="swiftCode != null">SWIFT_CODE = #{swiftCode}</if>
+			<if test="country != null">COUNTRY = #{country}</if>
+		</trim>
+		where ID = #{id}
+	</update>
+
+	<insert id="insertUserBankAccount" parameterType="UserBankAccount">
+		insert into USER_BANK_ACCOUNT
+		(ID,BALANCE,USER_ID,ACCT_NO,BANK_NAME,SWIFT_CODE,COUNTRY)
+		values(0,#{balance},#{user.id},#{accountNumber},#{bankName},#{swiftCode},
+		#{country})
+		<selectKey resultType="int" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+
+	<select id="getUserBankAccountList" resultMap="userBankAccountResultMap">
+		select USER_BANK_ACCOUNT where ID in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
