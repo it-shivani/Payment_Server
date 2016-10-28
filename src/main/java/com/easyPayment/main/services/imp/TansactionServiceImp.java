@@ -48,6 +48,8 @@ public class TansactionServiceImp implements TransferService {
 		if (!easyPayAcctService.updateAcct(epa2)) {
 			return Status.TRANSFER_FAILED;
 		}
+		//add into transfer info
+		transactionDao.addNewTransaction(trans);
 		return Status.TRANSFER_SUCCESS;
 	}
 

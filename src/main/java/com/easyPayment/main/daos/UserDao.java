@@ -20,6 +20,9 @@ public class UserDao extends BaseDao {
 	public User getUser(User user, boolean needPassword) {
 		// query for object
 		User result = getSqlSession().selectOne("com.easyPayment.user.getUser", user);
+		if(result == null){
+			return null;
+		}
 		if(!needPassword){
 			result.setSalt("");
 			result.setPassword("");

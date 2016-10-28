@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyPayment.main.domains.User;
 import com.easyPayment.main.services.UserService;
+import com.easyPayment.main.utils.MailService;
 import com.easyPayment.main.utils.ReturnObject;
 
 @RestController
@@ -20,6 +21,9 @@ public class UserREST {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	MailService mailService;
 
 	/**
 	 * get user information by user ID-- https://domain.com/user/{id}
@@ -28,13 +32,37 @@ public class UserREST {
 	@ResponseBody
 	public ReturnObject getName(@PathVariable Integer id) {
 		User tc = new User();
+		tc.setId(id);
 		tc = userService.getUserInfo(tc, false);
-		ReturnObject ro = new ReturnObject(true, "", 1, tc);
+		ReturnObject ro ;
+		if(tc == null){
+			ro = new ReturnObject(false, "user doesn't exist", 1, null);
+		}else{
+			ro = new ReturnObject(true, "", 1, tc);
+		}
+		return ro;
+	}
+	
+	/**
+	 * get user information by user email-- https://domain.com/user/byEmail/{email}
+	 */
+	@RequestMapping(value = "/byEmail/{email}", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnObject getUserByEmail(@PathVariable String email) {
+		User tc = new User();
+		tc.setEmail(email);
+		tc = userService.getUserInfo(tc, false);
+		ReturnObject ro ;
+		if(tc == null){
+			ro = new ReturnObject(false, "user doesn't exist", 1, null);
+		}else{
+			ro = new ReturnObject(true, "", 1, tc);
+		}
 		return ro;
 	}
 
 	/**
-	 * add a new user-- https://domain.com/user/
+	 *  user register-- https://domain.com/user/
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody

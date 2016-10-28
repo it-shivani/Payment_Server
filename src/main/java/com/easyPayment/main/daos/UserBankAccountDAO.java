@@ -18,6 +18,7 @@ public class UserBankAccountDAO extends BaseDao {
 	 */
 	public UserBankAccount getUserBankAccount(UserBankAccount uba, User user) {
 		// query for object
+		uba.setUser(user);
 		UserBankAccount result = getSqlSession().selectOne("com.easyPayment.userBankAccount.getUserBankAccount", uba);
 		return result;
 	}
@@ -50,6 +51,7 @@ public class UserBankAccountDAO extends BaseDao {
 	 * @return
 	 */
 	public Integer insertUserBankAccount(UserBankAccount uba,User user) {
+		uba.setUser(user);
 		Integer result = getSqlSession().insert("com.easyPayment.userBankAccount.insertUserBankAccount", uba);
 		return result;
 	}
