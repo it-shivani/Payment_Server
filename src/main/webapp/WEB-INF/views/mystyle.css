@@ -1,0 +1,192 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 29, 2016, 12:18:29 AM
+    Author     : Shivani
+*/
+            body {
+                  background-position: 55% 40%;
+                  background-repeat: no-repeat;
+                  background-color: ivory;
+                  width : 100%;
+                  height : 100%;   
+            }
+            #header{
+                background-color:#5cadf8;
+                 top: 0;
+                 left: 0;
+                 width: 100%;
+                 height: 7%;
+                 padding: 0;
+                 margin: 0;
+                 color:#ffffff;
+                 text-align:left;
+                 font-family:sans-serif;
+                 font-size: 100%;
+                 font-style:normal;
+                 position:relative; 
+                 padding-bottom: 0px;
+            }
+            #nav {
+                   width : 100%;
+                   background-image: url("image/moneyimage.jpg");
+                   background-size: 100% 100%;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                   height:60%;
+                   padding-top: 0px;
+            }
+            #main{
+                width: 66%;
+                height: 100%;
+                float:next;
+                text-align:center;
+                border-left: 2px solid #0000ff;
+                padding: 2%;
+            }
+            #footer {
+              background-color:#0066ff;
+              clear:both;
+              text-align:center;
+              padding:5px;
+              position:relative;
+              bottom:0;
+              width: 100%;
+              height : 15px;
+          }   
+          h1   { 
+                   text-indent: 10%;
+                   font-family: verdana;
+                   float :left;
+                   text-height:text-size;
+                   vertical-align:middle;
+            }
+
+            h2 {
+                   display: inline;
+                   font-family: verdana;
+                   font-size: 75%;
+                   text-align:right;
+                   text-indent: 5%;
+                   position:relative;
+                   float : right;
+            }            
+            h3{
+                color:#0000ff;
+                text-align: left;
+                font-family: verdana;
+                font-style: italic;
+            }
+            h4{
+                color:#9999ff;
+                text-align: left;
+                font-family: verdana;
+                font-size:medium;
+            }
+            .image{
+                border: 2px solid #a9a9ad;
+                border-radius: 5px;
+                width: 25%;
+                margin-top: 5px;
+                height: 150px;
+            }
+            .row1 {
+               width: 100%;
+               text-align: left;
+               padding-bottom: 2px;
+            }
+           .col1 {
+               float: left;
+               margin-left: 1px;
+               width: 90%;
+               margin-top: 1px;
+               padding-top:1px;
+            }
+            .submit{
+                text-align: right;
+            }
+            .output{
+                text-align: center;
+                font-family: verdana;
+                border: 2px solid #a9a9ad;
+                color:#9999ff;
+                position:relative;
+                box-shadow: 10px 0 8px 3px #d3d3d3;
+                margin-top: 20px;
+                padding: 10px;
+                width: 30%;
+            }
+            Label{
+                color: #0066ff;
+                padding: 15px;
+                font-size:15px;
+                font-family: verdana;
+                text-align: right;
+            }
+            input[type=text] {
+                padding: 15px;
+                height: 20px;
+                position: relative;
+                left: 0;
+                outline: none;
+                border: 1px solid #cdcdcd;
+                border-color: #0066ff;
+                background-color: white;
+                font-size: 15px;
+                spacing: 5px;
+                text-align:center;
+                padding-top: 5px;
+                padding-left: 5px;
+                margin-left: 5px;
+            }
+            input[type=password] {
+                padding: 15px;
+                height: 20px;
+                position: relative;
+                left: 0;
+                outline: none;
+                border: 1px solid #cdcdcd;
+                border-color: #0066ff;
+                background-color: white;
+                font-size: 15px;
+                spacing: 5px;
+                text-align:center;
+                padding-top: 5px;
+                padding-left: 5px;
+                margin-left: 5px;
+            }
+            input[type=submit] {
+                padding: 20px;
+                height: 18px;
+                position: relative;
+                left: 0;
+                outline: none;
+                border: 1px solid #cdcdcd;
+                border-color: #0066ff;
+                background-color: #0066ff;
+                color: white;
+                font-size: 15px;
+                font-family: verdana;
+                spacing: 5px;
+                text-align:center;
+                padding-top: 5px;  
+            }
+            input[type=reset] {
+                padding: 20px;
+                height: 18px;
+                position: relative;
+                left: 0;
+                outline: none;
+                border: 1px solid #cdcdcd;
+                border-color: #0066ff;
+                background-color: #0066ff;
+                color: white;
+                font-size: 15px;
+                font-family: verdana;
+                spacing: 5px;
+                text-align:center;
+                padding-top: 5px;  
+            }
