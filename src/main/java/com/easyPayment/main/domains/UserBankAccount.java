@@ -2,6 +2,7 @@ package com.easyPayment.main.domains;
  
 
 public class UserBankAccount {
+	private Integer id;
 	private int accountId;
 	private double balance;
 	private User user;
@@ -29,6 +30,16 @@ public class UserBankAccount {
 		this.bankName = bankName;
 		this.swiftCode = swiftCode;
 		this.country = country;
+	}
+	
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public int getAccountId() {

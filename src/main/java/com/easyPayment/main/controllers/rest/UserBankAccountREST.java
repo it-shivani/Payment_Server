@@ -22,12 +22,14 @@ public class UserBankAccountREST {
 	UserBankAccountService userBankAccountService;
 
 	/**
-	 * get user bank account information by userbankaccount ID-- https://domain.com/userbankaccount/{userid}/{acctID}
+	 * get user bank account information by userbankaccount ID-- https://domain.com/userbankaccount/{userid}
 	 */
 	@RequestMapping(value = "/{userid}", method = RequestMethod.GET)
 	@ResponseBody
 	public ReturnObject getName(@PathVariable Integer userid) {
 		UserBankAccount tc = new UserBankAccount();
+		//test
+		tc.setId(userid);
 		User user = new User();
 		user.setId(userid);
 		tc = userBankAccountService.getUserBankAccountInfo(new UserBankAccount(), user);

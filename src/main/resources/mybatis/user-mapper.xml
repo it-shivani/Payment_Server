@@ -12,9 +12,9 @@
 		<result property="phone" column="PHONE" />
 		<result property="password" column="PASSWORD" />
 		<result property="salt" column="SALT" />
-		<result property="createAt" column="CREATE_AT" />
-		<result property="updateAt" column="UPDATE_AT" />
-		<result property="deleteAt" column="DELETE_AT" />
+		<result property="createAt" column="CREATED_AT" />
+		<result property="updateAt" column="UPDATED_AT" />
+		<result property="deleteAt" column="DELETED_AT" />
 	</resultMap>
 
 	<select id="getUser" parameterType="User" resultMap="userResultMap">
@@ -26,7 +26,7 @@
 			and FIRST_NAME = #{firstName}
 		</if>
 		<if test="lastName != null">
-			and LAST_NAME = #{lsetName}
+			and LAST_NAME = #{lastName}
 		</if>
 		<if test="email != null">
 			and EMAIL = #{email}
@@ -50,21 +50,21 @@
 		update USER
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="firstName != null">FIRST_NAME = #{firstName}</if>
-			<if test="lsetName != null">LAST_NAME = #{lsetName}</if>
+			<if test="lsetName != null">LAST_NAME = #{lastName}</if>
 			<if test="email != null">EMAIL = #{email}</if>
 			<if test="phone != null">PHONE = #{phone}</if>
 			<if test="password != null">PASSWORD = #{password}</if>
 			<if test="salt != null">SALT = #{salt}</if>
-			<if test="updateAt != null">UPDATE_AT = #{updateAt}</if>
-			<if test="deleteAt != null">DELETE_AT = #{deleteAt}</if>
+			<if test="updateAt != null">UPDATED_AT = #{updateAt}</if>
+			<if test="deleteAt != null">DELETED_AT = #{deleteAt}</if>
 		</trim>
 		where ID = #{id}
 	</update>
 
 	<insert id="insertUser" parameterType="User">
 		insert into USER
-		(ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE,PASSWORD,SALT,CREATE_AT)
-		values(0,#{firstName},#{lsetName},#{email},#{phone},#{password},
+		(ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE,PASSWORD,SALT,CREATED_AT)
+		values(0,#{firstName},#{lastName},#{email},#{phone},#{password},
 		#{salt}, #{createAt})
 		<selectKey resultType="int" keyProperty="id">
 			SELECT
