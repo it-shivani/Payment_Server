@@ -27,10 +27,10 @@ public class TansactionServiceImp implements TransferService {
 
 	@Autowired
 	EasyPayAcctService easyPayAcctService;
-	
+
 	@Autowired
 	BankTransferService bankTransferService;
-	
+
 	@Autowired
 	UserBankAccountService userBankAccountService;
 
@@ -41,11 +41,17 @@ public class TansactionServiceImp implements TransferService {
 		if (epa1 == null) {
 			return Status.TRANSFER_USER_DOESNOT_EXISTED;
 		} else if (epa1.getBalance() < trans.getAmount()) {
+			// add into transfer info
+			trans.setStatus("TRANSFER_BALANCE_NOT_ENOUGH");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_BALANCE_NOT_ENOUGH;
 		}
 		// 2 check use-2 is existed
 		EasyPayAccount epa2 = easyPayAcctService.getAccount(trans.getToAcct());
 		if (epa2 == null) {
+			// add into transfer info
+			trans.setStatus("TRANSFER_USER_DOESNOT_EXISTED");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_USER_DOESNOT_EXISTED;
 		}
 		// 3 make transfer
@@ -54,12 +60,19 @@ public class TansactionServiceImp implements TransferService {
 		double ub2 = epa2.getBalance() + trans.getAmount();
 		epa2.setBalance(ub2);
 		if (!easyPayAcctService.updateAcct(epa1)) {
+			// add into transfer info
+			trans.setStatus("FAILED");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_FAILED;
 		}
 		if (!easyPayAcctService.updateAcct(epa2)) {
+			// add into transfer info
+			trans.setStatus("FAILED");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_FAILED;
 		}
-		//add into transfer info
+		// add into transfer info
+		trans.setStatus("SUCCESS");
 		transactionDao.addNewTransaction(trans);
 		return Status.TRANSFER_SUCCESS;
 	}
@@ -71,42 +84,68 @@ public class TansactionServiceImp implements TransferService {
 	}
 
 	@Override
-	public int makeTransferToBank(UserBankAccount userBank,double amount) {
-		//make sure balance is SUFFICIENT
+	public int makeTransferToBank(UserBankAccount userBank, double amount) {
+		userBank = userBankAccountService.getUserBankAccountInfo(userBank);
+		Transaction trans = new Transaction();
+		trans.setBalance(amount);
+		trans.setUserId(userBank.getUserId());
+		trans.setToAcct(userBank.getUserId());
+		trans.setDescription("Transfer to bank");
+		// make sure balance is SUFFICIENT
 		EasyPayAccount epa = easyPayAcctService.getAccount(userBank.getUserId());
-		if(epa.getBalance() < amount){
+		if (epa.getBalance() < amount) {
+			// add into transfer info
+			trans.setStatus("INSUFFICIENT_BALANCE");
+			transactionDao.addNewTransaction(trans);
 			return Status.INSUFFICIENT_BALANCE;
 		}
-		//make transfer
+		// make transfer
 		BankAccount sysBank = SystemBankAccount.getSystemBankAccount(userBank.getBankName());
-		BankAccount userBa= new BankAccount();
+		BankAccount userBa = new BankAccount();
 		userBa.getFromUserBankAccount(userBank);
-		boolean result = bankTransferService.transferAtSameBank(sysBank,userBa, amount);
-		//transfer done, make modify on account
-		if(result){
-			epa.setBalance(epa.getBalance()-amount);
+		boolean result = bankTransferService.transferAtSameBank(sysBank, userBa, amount);
+		// transfer done, make modify on account
+		if (result) {
+			epa.setBalance(epa.getBalance() - amount);
 			easyPayAcctService.updateAcct(epa);
-		}else{
+		} else {
+			trans.setStatus("TRANSFER_FAILED");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_FAILED;
 		}
+		// add into transfer info
+		trans.setStatus("SUCCESS");
+		transactionDao.addNewTransaction(trans);
 		return Status.TRANSFER_SUCCESS;
 	}
-	
+
 	@Override
-	public int makeTransferFromBank(UserBankAccount userBank,double amount) {
+	public int makeTransferFromBank(UserBankAccount userBank, double amount) {
+		userBank = userBankAccountService.getUserBankAccountInfo(userBank);
+		Transaction trans = new Transaction();
+		trans.setBalance(amount);
+		trans.setUserId(userBank.getUserId());
+		trans.setToAcct(userBank.getUserId());
+		trans.setDescription("Transfer from bank");
 		EasyPayAccount epa = easyPayAcctService.getAccount(userBank.getUserId());
-		//make transfer
+		// make transfer
 		BankAccount sysBank = SystemBankAccount.getSystemBankAccount(userBank.getBankName());
-		BankAccount userBa= new BankAccount();
+		BankAccount userBa = new BankAccount();
 		userBa.getFromUserBankAccount(userBank);
-		boolean result = bankTransferService.transferAtSameBank(userBa,sysBank, amount);
-		//transfer done, make modify on account
-		if(result){
-			epa.setBalance(epa.getBalance()+amount);
+		boolean result = bankTransferService.transferAtSameBank(userBa, sysBank, amount);
+		// transfer done, make modify on account
+		if (result) {
+			epa.setBalance(epa.getBalance() + amount);
 			easyPayAcctService.updateAcct(epa);
-		}else{
+		} else {
+			// add into transfer info
+			trans.setStatus("TRANSFER_FAILED");
+			transactionDao.addNewTransaction(trans);
 			return Status.TRANSFER_FAILED;
 		}
+		// add into transfer info
+		trans.setStatus("SUCCESS");
+		transactionDao.addNewTransaction(trans);
 		return Status.TRANSFER_SUCCESS;
 	}
 
