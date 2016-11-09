@@ -92,7 +92,12 @@ public class UserDao extends BaseDao {
 	 * @return
 	 */
 	public List<Integer> getRelationList(Integer userID) {
-		List<Integer> result = getSqlSession().selectList("com.easyPayment.user.getRelations", userID);
+		List<Integer> result ;
+		try{
+			result = getSqlSession().selectList("com.easyPayment.user.getRelations", userID);
+		}catch(Exception e){
+			return null;
+		}
 		return result;
 	}
 

@@ -1,55 +1,38 @@
 package com.easyPayment.main.services;
 
 import java.util.List;
-import com.easyPayment.main.domains.*;
+
+import com.easyPayment.main.domains.UserBankAccount;
 
 public interface UserBankAccountService {
 	/**
-	 * find user through some user's information
-	 * 
-	 * @param user
-	 * @param needPassword
-	 * @return
+	 * get User Bank Account Info
 	 */
-	public UserBankAccount getUserBankAccountInfo(UserBankAccount uba, User user);
-	
+	public UserBankAccount getUserBankAccountInfo(UserBankAccount uba);
+
 	/**
-	 * check user
-	 * @param user
-	 * @return
+	 * check user bank account
 	 */
-	public boolean checkUserBankAccount(UserBankAccount uba, User user);
+	public boolean checkUserBankAccount(UserBankAccount uba);
 
 	/**
 	 * add a new user bank account
-	 * 
-	 * @param user
-	 * @return
 	 */
-	public Integer addUserBankAccount(UserBankAccount uba, User user);
+	public Integer addUserBankAccount(UserBankAccount uba);
 
 	/**
-	 * update a user
-	 * 
-	 * @param user
-	 * @return
+	 * update User Bank Account
 	 */
 	public boolean updateUserBankAccount(UserBankAccount uba);
 
 	/**
-	 * delete user through user id
-	 * 
-	 * @param userId
-	 * @return
+	 * delete user bank account through bank account id
 	 */
-	public Integer deleteUserBankAccount(Integer userBankAccountId);
+	public boolean deleteUserBankAccount(Integer userBankAccountId);
 
 	/**
 	 * get user bank account list
-	 * 
-	 * @param userID
-	 * @return
 	 */
-	public List<UserBankAccount> getUserBankAccountList();
+	public List<UserBankAccount> getUserBankAccountList(UserBankAccount uba);
 
 }

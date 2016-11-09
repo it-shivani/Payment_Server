@@ -78,7 +78,7 @@ public class UserServiceImp implements UserService {
 	public boolean newRelation(Integer user1, Integer user2, String relationType) {
 		List<Integer> relations = userDao.getRelationList(user1);
 		// check user2 if already is a friend
-		if (relations.contains(user2)) {
+		if (relations!= null && relations.contains(user2)) {
 			return true;
 		}
 		boolean result = userDao.newUserRelation(user1, user2, relationType);

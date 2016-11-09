@@ -13,10 +13,27 @@ import com.easyPayment.main.utils.ReturnObject;
 @RequestMapping("transfer")
 public class TransferREST {
 	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "/toUser", method = RequestMethod.POST)
 	@ResponseBody
-	public ReturnObject makeTransfer(@RequestParam(value = "user1") String user1, 
+	public ReturnObject makeTransferToUser(@RequestParam(value = "user1") String user1, 
 			@RequestParam(value = "user2") String user2,
+			@RequestParam(value = "token") String token){
+		
+		return null;
+	}
+	
+	@RequestMapping(value = "/toBank", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnObject makeTransferToBank(@RequestParam(value = "amount") String amount, 
+			@RequestParam(value = "token") String token){
+		
+		return null;
+	}
+	
+	@RequestMapping(value = "/fromBank", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnObject makeTransferFromBank(@RequestParam(value = "amount") String amount, 
 			@RequestParam(value = "token") String token){
 		
 		return null;

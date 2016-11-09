@@ -1,11 +1,26 @@
 package com.easyPayment.main.domains;
- 
 
 public class UserBankAccount {
 	private Integer id;
-	private int accountId;
-	private double balance;
+	private Integer userId;
 	private User user;
+	private String accountNumber;
+	private String bankName;
+	private String swiftCode;
+	private String country;
+
+	public UserBankAccount() {
+		super();
+	}
+
+	public UserBankAccount(long balance, User user, String bankName, String swiftCode, String country) {
+		super();
+		this.user = user;
+		this.bankName = bankName;
+		this.swiftCode = swiftCode;
+		this.country = country;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -13,26 +28,6 @@ public class UserBankAccount {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	private long accountNumber;
-	private String bankName;
-	private int swiftCode;
-	private String country;
-	
-	public UserBankAccount() {
-		super();
-	}
-
-	public UserBankAccount(long balance, User user, String bankName, int swiftCode, String country) {
-		super();
-		this.balance = balance;
-		this.user = user;
-		this.bankName = bankName;
-		this.swiftCode = swiftCode;
-		this.country = country;
-	}
-	
-	
 
 	public Integer getId() {
 		return id;
@@ -42,27 +37,19 @@ public class UserBankAccount {
 		this.id = id;
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
-	public double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
-	public long getAccountNumber() {
+	public String getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(long accountNumber) {
+	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
@@ -74,11 +61,11 @@ public class UserBankAccount {
 		this.bankName = bankName;
 	}
 
-	public int getSwiftCode() {
+	public String getSwiftCode() {
 		return swiftCode;
 	}
 
-	public void setSwiftCode(int swiftCode) {
+	public void setSwiftCode(String swiftCode) {
 		this.swiftCode = swiftCode;
 	}
 
@@ -91,22 +78,6 @@ public class UserBankAccount {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + accountId;
-		result = prime * result + (int) (accountNumber ^ (accountNumber >>> 32));
-		long temp;
-		temp = Double.doubleToLongBits(balance);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((bankName == null) ? 0 : bankName.hashCode());
-		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + swiftCode;
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -115,11 +86,9 @@ public class UserBankAccount {
 		if (getClass() != obj.getClass())
 			return false;
 		UserBankAccount other = (UserBankAccount) obj;
-		if (accountId != other.accountId)
+		if (userId != other.userId)
 			return false;
 		if (accountNumber != other.accountNumber)
-			return false;
-		if (Double.doubleToLongBits(balance) != Double.doubleToLongBits(other.balance))
 			return false;
 		if (bankName == null) {
 			if (other.bankName != null)
@@ -143,9 +112,8 @@ public class UserBankAccount {
 
 	@Override
 	public String toString() {
-		return "UserBankAccount [accountId=" + accountId + ", balance=" + balance + ", user=" + user
-				+ ", accountNumber=" + accountNumber + ", bankName=" + bankName + ", swiftCode=" + swiftCode
-				+ ", country=" + country + "]";
+		return "UserBankAccount [accountId=" + userId + ", user=" + user + ", accountNumber=" + accountNumber
+				+ ", bankName=" + bankName + ", swiftCode=" + swiftCode + ", country=" + country + "]";
 	}
-	
+
 }

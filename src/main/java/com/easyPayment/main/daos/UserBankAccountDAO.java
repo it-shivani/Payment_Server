@@ -1,31 +1,26 @@
 package com.easyPayment.main.daos;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import org.springframework.stereotype.Repository;
-import com.easyPayment.main.domains.User;
+
 import com.easyPayment.main.domains.UserBankAccount;
 
 @Repository
 public class UserBankAccountDAO extends BaseDao {
 
 	/**
-	 * get user Info by user id
-	 * 
-	 * @param id
-	 * @return
+	 * get User Bank Accounts
 	 */
-	public UserBankAccount getUserBankAccount(UserBankAccount uba, User user) {
+	public List<UserBankAccount> getUserBankAccounts(UserBankAccount uba) {
 		// query for object
-		uba.setUser(user);
-		UserBankAccount result = getSqlSession().selectOne("com.easyPayment.userBankAccount.getUserBankAccount", uba);
+		List<UserBankAccount> result = getSqlSession().selectList("com.easyPayment.userBankAccount.getUserBankAccount",
+				uba);
 		return result;
 	}
+
 	/**
 	 * update an user bank account
-	 * @param userbank account
-	 * @return
 	 */
 	public boolean updateUserBankAccount(UserBankAccount uba) {
 		Integer result = getSqlSession().update("com.easyPayment.userBankAccount.updateUserBankAccount", uba);
@@ -34,35 +29,34 @@ public class UserBankAccountDAO extends BaseDao {
 		}
 		return false;
 	}
+
 	/**
-	 * insert an user bank account
-	 * 
-	 * @param user bank account
-	 * @return
+	 * delete User Bank Account
 	 */
-	public Integer deleteUserBankAccount(Integer ubaId) {
+	public boolean deleteUserBankAccount(Integer ubaId) {
 		Integer result = getSqlSession().delete("com.easyPayment.userBankAccount.deleteUserBankAccount", ubaId);
-		return result;
+		if(result == null || result <= 0){
+			return false;
+		}
+		return true;
 	}
+
 	/**
-	 *delete an user bank account
-	 * 
-	 * @param user bank account
-	 * @return
+	 * insert User Bank Account
 	 */
-	public Integer insertUserBankAccount(UserBankAccount uba,User user) {
-		uba.setUser(user);
+	public Integer insertUserBankAccount(UserBankAccount uba) {
 		Integer result = getSqlSession().insert("com.easyPayment.userBankAccount.insertUserBankAccount", uba);
 		return result;
 	}
+
 	/**
-	 * get user list by condition 
-	 * @param condition
-	 * @return
+	 * get User Bank Account List
+	 * 
+	 * DO NOT USE THIS FUNCTION AS MAY CAUSE EXCEPTION
 	 */
 	public List<UserBankAccount> getUserBankAccountList() {
-		List<UserBankAccount> ubas = getSqlSession().selectList("com.easyPayment.userBankAccount.getUserBankAccountList");
+		List<UserBankAccount> ubas = getSqlSession()
+				.selectList("com.easyPayment.userBankAccount.getUserBankAccountList");
 		return ubas;
 	}
 }
-

@@ -81,7 +81,7 @@
 	</select>
 
 	<insert id="newUserRelation" parameterType="java.util.Map">
-		insert into USER_RELATION (USER1_ID, USER2_ID, RELATION_TYPE, ID)
+		insert into USER_RELATIONS (USER1_ID, USER2_ID, RELATION_TYPE, ID)
 		values(#{user_1}, #{user_2}, #{relationType}, 0)
 		<selectKey resultType="int" keyProperty="id">
 			SELECT
@@ -89,9 +89,9 @@
 		</selectKey>
 	</insert>
 
-	<select id="getRelations" parameterType="java.util.Map">
+	<select id="getRelations" parameterType="java.lang.Integer" resultType="java.lang.Integer">
 		select USER2_ID from
-		USER_RELATIONS where USER1_ID = #{user_id}
+		USER_RELATIONS where USER1_ID = #{userId}
 	</select>
 
 	<delete id="deleteRelation" parameterType="java.util.Map">

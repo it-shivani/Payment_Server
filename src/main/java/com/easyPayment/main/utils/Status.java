@@ -8,7 +8,9 @@ public class Status {
 	public static int TRANSFER_BALANCE_NOT_ENOUGH = 2;
 	public static int TRANSFER_USER_DOESNOT_EXISTED = 3;
 	
-	
+	//tansfer to/from bank
+	public static int INSUFFICIENT_BALANCE = 2;
+
 	
 
 }

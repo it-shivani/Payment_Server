@@ -2,6 +2,8 @@ package com.easyPayment.main.controllers.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import com.easyPayment.main.utils.MailService;
 import com.easyPayment.main.utils.ReturnObject;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserREST {
 
 	@Autowired
@@ -26,11 +28,37 @@ public class UserREST {
 	MailService mailService;
 
 	/**
-	 * get user information by user ID-- https://domain.com/user/{id}
+	 * Checked
+	 * get user information by user ID-- https://domain.com/users/{id}
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ReturnObject getName(@PathVariable Integer id) {
+		if(id == null){
+			return new ReturnObject(true, "", 1,"");
+		}
+		User tc = new User();
+		tc.setId(id);
+		tc = userService.getUserInfo(tc, false);
+		ReturnObject ro ;
+		if(tc == null){
+			ro = new ReturnObject(false, "user doesn't exist", 1, null);
+		}else{
+			ro = new ReturnObject(true, "", 1, tc);
+		}
+		return ro;
+	}
+	
+	/**
+	 * Checked
+	 * search user information -- https://domain.com/users?email=ee@eew.com&name=www
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnObject searchUser(@PathVariable Integer id) {
+		if(id == null){
+			return new ReturnObject(true, "", 0,"");
+		}
 		User tc = new User();
 		tc.setId(id);
 		tc = userService.getUserInfo(tc, false);
@@ -62,21 +90,17 @@ public class UserREST {
 	}
 
 	/**
-	 *  user register-- https://domain.com/user/
+	 *  user register (add)-- https://domain.com/users/
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	@ResponseBody
-	public ReturnObject saveUser(@RequestParam(value = "firstName") String firstName,
-			@RequestParam(value = "lastName") String lastName, 
-			@RequestParam(value = "email") String email,
-			@RequestParam(value = "phone") String phone, 
-			@RequestParam(value = "password") String password) {
+	public ReturnObject saveUser(HttpServletRequest request) {
 		User user = new User();
-		user.setFirstName(firstName);
-		user.setLastName(lastName);
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setPhone(phone);
+		user.setFirstName(request.getParameter("firstName"));
+		user.setLastName(request.getParameter("lastName"));
+		user.setEmail(request.getParameter("email"));
+		user.setPassword(request.getParameter("password"));
+		user.setPhone(request.getParameter("phone"));
 		boolean success = false;
 		String message = "Email address exist";
 		if (!user.check()) {
@@ -97,39 +121,24 @@ public class UserREST {
 		}
 	}
 
-	/**
-	 * login https://domain.com/user/login/
-	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	@ResponseBody
-	public ReturnObject login(@RequestParam(value = "email") String email, 
-			@RequestParam(value = "phone") String phone,
-			@RequestParam(value = "password") String password) {
-		User user = new User();
-		user.setEmail(email);
-		user.setPassword(password);
-		boolean check = userService.checkUser(user);
-		ReturnObject rb = new ReturnObject(check, "", 0, null);
-		return rb;
-	}
+	
 
 	/**
-	 * add a new relation https://domain.com/user/relations
+	 * add a new relation (add a new friend) https://domain.com/users/{userId}/friends/{friendId}
 	 */
-	@RequestMapping(value = "/relations", method = RequestMethod.POST)
+	@RequestMapping(value = "/{userId}/friends/{friendId}", method = RequestMethod.GET)
 	@ResponseBody
-	public ReturnObject newRelation(@RequestParam(value = "userId") String userId,
-			@RequestParam(value = "friendId") String friendId, 
-			@RequestParam(value = "type") String type) {
-		boolean result = userService.newRelation(Integer.parseInt(userId), Integer.parseInt(friendId), type);
+	public ReturnObject newRelation(@PathVariable String userId,
+			@PathVariable String friendId) {
+		boolean result = userService.newRelation(Integer.parseInt(userId), Integer.parseInt(friendId), "");
 		ReturnObject rb = new ReturnObject(result, "", 0, null);
 		return rb;
 	}
 	
 	/**
-	 * delete a relationship https://domain.com/user/relations
+	 * delete a relationship https://domain.com/users/friends
 	 */
-	@RequestMapping(value = "/relations", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/friends", method = RequestMethod.DELETE)
 	@ResponseBody
 	public ReturnObject deleteRelation(@RequestParam(value = "userId") String userId,
 			@RequestParam(value = "friendId") String friendId){
@@ -139,13 +148,13 @@ public class UserREST {
 	}
 	
 	/**
-	 * get relations list https://domain.com/user/relations/{id}
+	 * get relations list https://domain.com/users/{userId}/friendList
 	 */
-	@RequestMapping(value = "/relations/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{userId}/friendList", method = RequestMethod.GET)
 	@ResponseBody
-	public ReturnObject getRelations(@PathVariable Integer id){
-		List<User> friends = userService.getRelationList(id);
-		ReturnObject rb = new ReturnObject(true, "", 0, friends);
+	public ReturnObject getRelations(@PathVariable Integer userId){
+		List<User> friends = userService.getRelationList(userId);
+		ReturnObject rb = new ReturnObject(true, "", friends.size(), friends);
 		return rb;
 	}
 	
