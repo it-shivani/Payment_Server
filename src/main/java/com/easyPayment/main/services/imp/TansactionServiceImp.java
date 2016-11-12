@@ -87,7 +87,7 @@ public class TansactionServiceImp implements TransferService {
 	public int makeTransferToBank(UserBankAccount userBank, double amount) {
 		userBank = userBankAccountService.getUserBankAccountInfo(userBank);
 		Transaction trans = new Transaction();
-		trans.setBalance(amount);
+		trans.setAmount(amount);
 		trans.setUserId(userBank.getUserId());
 		trans.setToAcct(userBank.getUserId());
 		trans.setDescription("Transfer to bank");
@@ -123,7 +123,7 @@ public class TansactionServiceImp implements TransferService {
 	public int makeTransferFromBank(UserBankAccount userBank, double amount) {
 		userBank = userBankAccountService.getUserBankAccountInfo(userBank);
 		Transaction trans = new Transaction();
-		trans.setBalance(amount);
+		trans.setAmount(amount);
 		trans.setUserId(userBank.getUserId());
 		trans.setToAcct(userBank.getUserId());
 		trans.setDescription("Transfer from bank");

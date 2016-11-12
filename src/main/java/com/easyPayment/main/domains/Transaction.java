@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Transaction {
 	private Integer id;
-	private double balance;
 	private Integer userId; // user id who send the money 
 	private String fromAcct; // can be empty
 	private Date postTime;
@@ -32,12 +31,6 @@ public class Transaction {
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public double getBalance() {
-		return balance;
-	}
-	public void setBalance(double balance) {
-		this.balance = balance;
 	}
 	public Integer getUserId() {
 		return userId;

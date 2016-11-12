@@ -52,15 +52,17 @@ public class TransferREST {
 
 	/**
 	 * transfer money to user bank account
+	 * 
 	 * @param userId
 	 * @param amount
 	 * @return
 	 */
 	@RequestMapping(value = "/toBank", method = RequestMethod.POST)
 	@ResponseBody
-	public ReturnObject makeTransferToBank(@RequestParam Integer userId, @RequestParam double amount) {
+	public ReturnObject makeTransferToBank(@RequestParam Integer userId, @RequestParam double amount,
+			@RequestParam Integer bankAccountId) {
 		UserBankAccount uba = new UserBankAccount();
-		uba.setId(userId);
+		uba.setId(bankAccountId);
 		int result = transferService.makeTransferToBank(uba, amount);
 		ReturnObject ro = null;
 		if (result == Status.TRANSFER_SUCCESS) {
@@ -73,17 +75,18 @@ public class TransferREST {
 
 	/**
 	 * transfer money from user bank account to user easy-pay account
+	 * 
 	 * @param amount
 	 * @param userId
 	 * @return
 	 */
 	@RequestMapping(value = "/fromBank", method = RequestMethod.POST)
 	@ResponseBody
-	public ReturnObject makeTransferFromBank(@RequestParam double amount,
-			@RequestParam Integer userId) {
+	public ReturnObject makeTransferFromBank(@RequestParam double amount, @RequestParam Integer userId,
+			@RequestParam Integer bankAccountId) {
 
 		UserBankAccount uba = new UserBankAccount();
-		uba.setId(userId);
+		uba.setId(bankAccountId);
 		int result = transferService.makeTransferFromBank(uba, amount);
 		ReturnObject ro = null;
 		if (result == Status.TRANSFER_SUCCESS) {
@@ -101,11 +104,12 @@ public class TransferREST {
 	}
 
 	/**
-	 * get user transaction list with detail 
+	 * get user transaction list with detail
+	 * 
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/{userId}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/list/{userId}", method = RequestMethod.GET)
 	@ResponseBody
 	public ReturnObject getTransferList(@PathVariable Integer userId) {
 		Transaction trans = new Transaction();

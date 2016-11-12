@@ -16,11 +16,18 @@ public interface UserService {
 	public User getUserInfo(User user, boolean needPassword);
 	
 	/**
+	 * get user list 
+	 * @param user
+	 * @return
+	 */
+	public List<User> getUserList(User user);
+	
+	/**
 	 * check user
 	 * @param user
 	 * @return
 	 */
-	public boolean checkUser(User user);
+	public int checkUser(User user);
 
 	/**
 	 * add a new user

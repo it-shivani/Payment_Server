@@ -28,9 +28,8 @@
 		update EASY_PAY_ACCOUNT
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="balance != null">BALANCE = #{balance}</if>
-			<if test="acctNo != null">ACCT_NO = #{acctNo}</if>
 		</trim>
-		where ID = #{id}
+		where USER_ID = #{userId}
 	</update>
 
 </mapper>

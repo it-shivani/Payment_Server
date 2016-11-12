@@ -62,8 +62,14 @@ public class UserDao extends BaseDao {
 	 * @param condition
 	 * @return
 	 */
-	public List<User> getUserList(List<Integer> condition) {
-		List<User> users = getSqlSession().selectList("com.easyPayment.user.getUserList", condition);
+	public List<User> getUserList(User condition) {
+		List<User> users = getSqlSession().selectList("com.easyPayment.user.getUser", condition);
+		if(users != null){
+			for(User u : users){
+				u.setPassword(null);
+				u.setSalt(null);
+			}
+		}
 		return users;
 	}
 

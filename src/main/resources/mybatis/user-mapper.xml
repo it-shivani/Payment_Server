@@ -48,16 +48,16 @@
 
 	<update id="updateUser" parameterType="User">
 		update USER
-		<trim prefix="SET" suffixOverrides=",">
-			<if test="firstName != null">FIRST_NAME = #{firstName}</if>
-			<if test="lsetName != null">LAST_NAME = #{lastName}</if>
-			<if test="email != null">EMAIL = #{email}</if>
-			<if test="phone != null">PHONE = #{phone}</if>
-			<if test="password != null">PASSWORD = #{password}</if>
-			<if test="salt != null">SALT = #{salt}</if>
-			<if test="updateAt != null">UPDATED_AT = #{updateAt}</if>
-			<if test="deleteAt != null">DELETED_AT = #{deleteAt}</if>
-		</trim>
+		<set>
+			<if test="firstName != null">FIRST_NAME = #{firstName},</if>
+			<if test="lastName != null">LAST_NAME = #{lastName},</if>
+			<if test="email != null">EMAIL = #{email},</if>
+			<if test="phone != null">PHONE = #{phone},</if>
+			<if test="password != null">PASSWORD = #{password},</if>
+			<if test="salt != null">SALT = #{salt},</if>
+			<if test="updateAt != null">UPDATED_AT = #{updateAt},</if>
+			<if test="deleteAt != null">DELETED_AT = #{deleteAt},</if>
+		</set>
 		where ID = #{id}
 	</update>
 

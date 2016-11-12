@@ -6,7 +6,6 @@
 
 	<resultMap type="Transaction" id="transactionResultMap">
 		<result property="id" column="ID" />
-		<result property="balance" column="BALANCE" />
 		<result property="userId" column="USER_ID" />
 		<result property="fromAcct" column="FROM_ACCT_ID" />
 		<result property="postTime" column="POST_TIME" />
@@ -18,9 +17,9 @@
 	</resultMap>
 
 	<insert id="newTransaction" parameterType="Transaction">
-		insert into TRANSACTIONS (ID,BALANCE,USER_ID,FROM_ACCT_ID,POST_TIME,
+		insert into TRANSACTIONS (ID,USER_ID,FROM_ACCT_ID,POST_TIME,
 			DESCRIPTION,TYPE,STATUS,AMOUNT,TO_ACCOUNT_ID)
-		values(0,#{balance},#{userId},#{fromAcct},#{postTime},#{description},
+		values(0,#{userId},#{fromAcct},#{postTime},#{description},
 			#{type},#{status},#{amount},#{toAcct})
 			<selectKey resultType="int" keyProperty="id">
 			SELECT
@@ -44,9 +43,6 @@
 		</if>
 		<if test="status != null">
 			and STATUS = #{status}
-		</if>
-		<if test="amount != null">
-			and AMOUNT = #{amount}
 		</if>
 		<if test="toAcct != null">
 			and TO_ACCOUNT_ID = #{toAcct}

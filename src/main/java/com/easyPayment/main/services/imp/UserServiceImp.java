@@ -14,6 +14,7 @@ import com.easyPayment.main.domains.User;
 import com.easyPayment.main.services.EasyPayAcctService;
 import com.easyPayment.main.services.UserService;
 import com.easyPayment.main.utils.MD5Util;
+import com.easyPayment.main.utils.Status;
 
 @Service
 @Transactional
@@ -30,13 +31,20 @@ public class UserServiceImp implements UserService {
 		User result = userDao.getUser(user, needPassword);
 		return result;
 	}
+	
+	@Override
+	public List<User> getUserList(User user) {
+		checkNull( user);
+		List<User> result = userDao.getUserList(user);
+		return result;
+	}
 
 	@Override
 	public Integer addUser(User user) {
 		// check user
 		User temp = new User();
 		temp.setEmail(user.getEmail());
-		if (checkUser(temp)) {
+		if (checkUser(temp) != Status.CHECK_SUCCESS) {
 			return 0;
 		}
 		user.setCreateAt(new Date());
@@ -61,6 +69,15 @@ public class UserServiceImp implements UserService {
 	@Override
 	public boolean updateUser(User user) {
 		user.setUpdateAt(new Date());
+
+		checkNull( user);
+		// if change password
+		if (user.getPassword() != null) {
+			String salt = MD5Util.randomSalt();
+			String password = MD5Util.MD5Encryption(user.getPassword() + salt);
+			user.setSalt(salt);
+			user.setPassword(password);
+		}
 		boolean result = userDao.updateUser(user);
 		return result;
 	}
@@ -78,7 +95,7 @@ public class UserServiceImp implements UserService {
 	public boolean newRelation(Integer user1, Integer user2, String relationType) {
 		List<Integer> relations = userDao.getRelationList(user1);
 		// check user2 if already is a friend
-		if (relations!= null && relations.contains(user2)) {
+		if (relations != null && relations.contains(user2)) {
 			return true;
 		}
 		boolean result = userDao.newUserRelation(user1, user2, relationType);
@@ -105,22 +122,43 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public boolean checkUser(User user) {
+	public int checkUser(User user) {
 		String password = user.getPassword();
 		user.setPassword(null);
 		User result = getUserInfo(user, true);
 		if (result == null) {
-			return false;
+			return Status.CHECK_USER_DOESNT_EXIST;
 		} else {
-			if (password != null) {
+			if (password != null && !password.equals("")) {
 				String temp = MD5Util.MD5Encryption(password + result.getSalt());
 				if (temp.equals(result.getPassword())) {
-					return true;
+					return Status.CHECK_SUCCESS;
 				}
-				return false;
+				return Status.CHECK_WRONG_PASSWORD;
 			} else {
-				return true;
+				return Status.CHECK_SUCCESS;
 			}
+		}
+	}
+	
+	public void checkNull(User user){
+		if (user.getFirstName()!= null && user.getFirstName().equals("")) {
+			user.setFirstName(null);
+		}
+		if (user.getLastName() != null && user.getLastName().equals("")) {
+			user.setLastName(null);
+		}
+		if (user.getEmail() != null &&user.getEmail().equals("")) {
+			user.setEmail(null);
+		}
+		if (user.getPhone() != null &&user.getPhone().equals("")) {
+			user.setPhone(null);
+		}
+		if (user.getPassword() != null &&user.getPassword().equals("")) {
+			user.setPassword(null);
+		}
+		if (user.getId() != null &&user.getId().equals("")) {
+			user.setId(null);
 		}
 	}
 
