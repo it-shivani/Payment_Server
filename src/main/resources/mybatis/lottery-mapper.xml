@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.easyPayment.lottery">
+
+	<resultMap type="Lottery" id="lotteryResultMap">
+		<result property="id" column="ID" />
+		<result property="createrId" column="CREATER_ID" />
+		<result property="betAmount" column="BET_AMOUNT" />
+		<result property="totalAmount" column="TOTAL_AMOUNT" />
+		<result property="endDate" column="END_DATETIME" />
+		<result property="winnerId" column="WINNER_ID" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+	<insert id="newLottery" parameterType="Lottery">
+		insert into LOTTERY (ID,CREATER_ID,BET_AMOUNT,TOTAL_AMOUNT,END_DATETIME,STATUS)
+		values (0,#{createrId},#{betAmount},#{totalAmount},#{endDate},#{status})
+		<selectKey resultType="int" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID() AS id
+		</selectKey>
+	</insert>
+	
+	<update id="updateLottery" parameterType="Lottery">
+		update LOTTERY 
+		<set>
+			<if test="betAmount != null">BET_AMOUNT = #{betAmount},</if>
+			<if test="totalAmount != null">TOTAL_AMOUNT = #{totalAmount},</if>
+			<if test="endDate != null">END_DATETIME = #{endDate},</if>
+			<if test="winnerId != null">WINNER_ID = #{winnerId},</if>
+			<if test="status != null">STATUS = #{status},</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<select id="getLottery" parameterType="Lottery" resultMap="lotteryResultMap" >
+		select * from LOTTERY where 1=1
+		<if test="id != null">
+			and ID = #{id}
+		</if>
+		<if test="createrId != null">
+			and CREATER_ID = #{createrId}
+		</if>
+		<if test="winnerId != null">
+			and WINNER_ID = #{winnerId}
+		</if>
+		<if test="status != null">
+			and STATUS = #{status}
+		</if>
+	</select>
+	
+	<select id="getLotteryHistory" parameterType="Lottery" resultMap="lotteryResultMap">
+		select * from LOTTERY where id in (
+			select lottery_Id from lottery_users where user_ID = #{userId})
+	</select>
+	
+	<insert id="joinLottey" parameterType="java.util.Map">
+		insert into LOTTERY_USERS (ID, USER_ID, AMOUNT, LOTTERY_ID)
+		values(0, #{userId}, #{amount}, #{lotteryId})
+	</insert>
+	
+	<delete id="leaveLottery" parameterType="java.util.Map">
+		delete from LOTTERY_USERS where USER_ID = #{userId} and LOTTERY_ID=#{lotteryId}
+	</delete>
+	
+	<select id="getUsers" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select USER_ID from LOTTERY_USERS where LOTTERY_ID = #{lotteryId}
+	</select>
+	
+	
+</mapper>

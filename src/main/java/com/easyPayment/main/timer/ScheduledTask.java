@@ -15,7 +15,7 @@ public class ScheduledTask {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
+        log.info("The System Bank Balance Has Been cleared ", dateFormat.format(new Date()));
     }
 
 }

@@ -2,10 +2,13 @@ package com.easyPayment.main.domains;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Transaction {
 	private Integer id;
 	private Integer userId; // user id who send the money 
 	private String fromAcct; // can be empty
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date postTime;
 	private String description;
 	private String type;

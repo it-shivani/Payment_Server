@@ -15,6 +15,9 @@ public class EasyPayAcctDao extends BaseDao {
 	 */
 	public Integer addNewAcct(EasyPayAccount acct) {
 		Integer result = getSqlSession().insert("com.easyPayment.eastPayAcc.addAcct", acct);
+		if (result != null && result > 0) {
+			return acct.getId();
+		}
 		return result;
 	}
 

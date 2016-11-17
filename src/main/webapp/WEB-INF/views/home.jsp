@@ -6,7 +6,8 @@
 </head>
 <body>
 <h1>
-	Test Page!  
+	This Is Just An API Test Page! For Post Method Only ! <br>
+	This Is Just An API Test Page! For Post Method Only ! <br>
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
@@ -90,6 +91,23 @@
 	bankName <input type="text" name="bankName" /><br>
 	swiftCode <input type="text" name="swiftCode" /><br>
 	country <input type="text" name="country" /><br>
+	submit<input type="submit" value="submit" /><br>
+</form>
+<hr>
+
+<div>create a lottery</div>
+<form action="lottery/" method="post">
+	betAmount  <input type="text" name="betAmount" /><br>
+	creraterId  <input type="text" name="creraterId" /><br>
+	endDate <input type="text" name="endDate" /><br>
+	submit<input type="submit" value="submit" /><br>
+</form>
+<hr>
+
+<div>join a lottery</div>
+<form action="lottery/join/" method="post">
+	lotteryId <input type="text" name="lotteryId" /><br>
+	userId  <input type="text" name="userId" /><br>
 	submit<input type="submit" value="submit" /><br>
 </form>
 <hr>

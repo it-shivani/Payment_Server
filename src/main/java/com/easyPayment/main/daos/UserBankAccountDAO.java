@@ -46,6 +46,9 @@ public class UserBankAccountDAO extends BaseDao {
 	 */
 	public Integer insertUserBankAccount(UserBankAccount uba) {
 		Integer result = getSqlSession().insert("com.easyPayment.userBankAccount.insertUserBankAccount", uba);
+		if (result != null && result > 0) {
+			return uba.getId();
+		}
 		return result;
 	}
 

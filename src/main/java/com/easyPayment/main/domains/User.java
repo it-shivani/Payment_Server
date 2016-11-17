@@ -3,6 +3,9 @@ package com.easyPayment.main.domains;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.easyPayment.main.utils.DateTimeUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,8 +16,11 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 	private String salt ;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createAt;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date updateAt;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date deleteAt;
 	
 	private String message;

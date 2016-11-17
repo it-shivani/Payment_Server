@@ -61,12 +61,12 @@
 		where ID = #{id}
 	</update>
 
-	<insert id="insertUser" parameterType="User">
+	<insert id="insertUser" parameterType="User" >
 		insert into USER
 		(ID,FIRST_NAME,LAST_NAME,EMAIL,PHONE,PASSWORD,SALT,CREATED_AT)
 		values(0,#{firstName},#{lastName},#{email},#{phone},#{password},
 		#{salt}, #{createAt})
-		<selectKey resultType="int" keyProperty="id">
+		<selectKey resultType="int" order="AFTER" keyProperty="id" >
 			SELECT
 			LAST_INSERT_ID() AS id
 		</selectKey>

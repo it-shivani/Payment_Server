@@ -13,6 +13,7 @@ import com.easyPayment.main.domains.EasyPayAccount;
 import com.easyPayment.main.domains.User;
 import com.easyPayment.main.services.EasyPayAcctService;
 import com.easyPayment.main.services.UserService;
+import com.easyPayment.main.utils.DateTimeUtil;
 import com.easyPayment.main.utils.MD5Util;
 import com.easyPayment.main.utils.Status;
 
@@ -44,10 +45,10 @@ public class UserServiceImp implements UserService {
 		// check user
 		User temp = new User();
 		temp.setEmail(user.getEmail());
-		if (checkUser(temp) != Status.CHECK_SUCCESS) {
+		if (checkUser(temp) != Status.CHECK_USER_DOESNT_EXIST) {
 			return 0;
 		}
-		user.setCreateAt(new Date());
+		user.setCreateAt(DateTimeUtil.now());
 		String password = user.getPassword();
 		// 4 digital salt
 		String salt = MD5Util.randomSalt();
@@ -68,8 +69,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public boolean updateUser(User user) {
-		user.setUpdateAt(new Date());
-
+		user.setUpdateAt(DateTimeUtil.now());
 		checkNull( user);
 		// if change password
 		if (user.getPassword() != null) {
@@ -86,7 +86,7 @@ public class UserServiceImp implements UserService {
 	public boolean deleteUser(Integer userId) {
 		User user = new User();
 		user.setId(userId);
-		user.setDeleteAt(new Date());
+		user.setDeleteAt(DateTimeUtil.now());
 		boolean result = userDao.updateUser(user);
 		return result;
 	}

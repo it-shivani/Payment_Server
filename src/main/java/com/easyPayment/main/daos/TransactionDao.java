@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.easyPayment.main.domains.Transaction;
+import com.easyPayment.main.utils.DateTimeUtil;
 
 @Repository
 public class TransactionDao extends BaseDao {
@@ -16,7 +17,11 @@ public class TransactionDao extends BaseDao {
 	 * @return
 	 */
 	public Integer addNewTransaction(Transaction trans) {
+		trans.setPostTime(DateTimeUtil.now());
 		Integer result = getSqlSession().insert("com.easyPayment.transaction.newTransaction", trans);
+		if (result != null && result > 0) {
+			return trans.getId();
+		}
 		return result;
 	}
 

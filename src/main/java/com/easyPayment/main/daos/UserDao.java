@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.easyPayment.main.domains.User;
+import com.easyPayment.main.utils.DateTimeUtil;
 
 @Repository
 public class UserDao extends BaseDao {
@@ -20,10 +21,10 @@ public class UserDao extends BaseDao {
 	public User getUser(User user, boolean needPassword) {
 		// query for object
 		User result = getSqlSession().selectOne("com.easyPayment.user.getUser", user);
-		if(result == null){
+		if (result == null) {
 			return null;
 		}
-		if(!needPassword){
+		if (!needPassword) {
 			result.setSalt("");
 			result.setPassword("");
 		}
@@ -53,6 +54,9 @@ public class UserDao extends BaseDao {
 	 */
 	public Integer insertUser(User user) {
 		Integer result = getSqlSession().insert("com.easyPayment.user.insertUser", user);
+		if (result != null && result > 0) {
+			return user.getId();
+		}
 		return result;
 	}
 
@@ -64,8 +68,8 @@ public class UserDao extends BaseDao {
 	 */
 	public List<User> getUserList(User condition) {
 		List<User> users = getSqlSession().selectList("com.easyPayment.user.getUser", condition);
-		if(users != null){
-			for(User u : users){
+		if (users != null) {
+			for (User u : users) {
 				u.setPassword(null);
 				u.setSalt(null);
 			}
@@ -79,13 +83,13 @@ public class UserDao extends BaseDao {
 	 * @param condition
 	 * @return
 	 */
-	public boolean newUserRelation(Integer user1 , Integer user2, String relationType) {
+	public boolean newUserRelation(Integer user1, Integer user2, String relationType) {
 		Map<String, Object> condition = new HashMap<String, Object>();
 		condition.put("user_1", user1);
 		condition.put("user_2", user2);
 		condition.put("relationType", relationType);
 		Integer result = getSqlSession().insert("com.easyPayment.user.newUserRelation", condition);
-		if (result > 0) {
+		if (result!= null && result > 0) {
 			return true;
 		}
 		return false;
@@ -98,10 +102,10 @@ public class UserDao extends BaseDao {
 	 * @return
 	 */
 	public List<Integer> getRelationList(Integer userID) {
-		List<Integer> result ;
-		try{
+		List<Integer> result;
+		try {
 			result = getSqlSession().selectList("com.easyPayment.user.getRelations", userID);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 		return result;

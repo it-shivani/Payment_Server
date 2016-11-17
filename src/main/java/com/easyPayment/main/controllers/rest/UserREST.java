@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.easyPayment.main.domains.User;
 import com.easyPayment.main.services.UserService;
+import com.easyPayment.main.utils.DateTimeUtil;
 import com.easyPayment.main.utils.MailService;
 import com.easyPayment.main.utils.ReturnObject;
 
@@ -38,11 +39,12 @@ public class UserREST {
 		}
 		User tc = new User();
 		tc.setId(id);
-		tc = userService.getUserInfo(tc, false);
+		tc = userService.getUserInfo(tc, false);		
 		ReturnObject ro;
 		if (tc == null) {
 			ro = new ReturnObject(false, "user doesn't exist", 1, null);
 		} else {
+			tc.setCreateAt(DateTimeUtil.dateFormatUtil(tc.getCreateAt()));
 			ro = new ReturnObject(true, "", 1, tc);
 		}
 		return ro;
@@ -101,14 +103,14 @@ public class UserREST {
 		user.setPassword(request.getParameter("password"));
 		user.setPhone(request.getParameter("phone"));
 		boolean success = false;
-		String message = "Email address exist";
+		String message = "";
 		if (!user.check()) {
 			message = user.getMessage();
 			ReturnObject rb = new ReturnObject(success, message, 0, user);
 			return rb;
 		} else {
 			Integer id = userService.addUser(user);
-			if (id == null) {
+			if (id == null || id<0) {
 				message = "internal error";
 			} else if (id > 0) {
 				success = true;
