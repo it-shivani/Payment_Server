@@ -23,7 +23,7 @@ public class SystemBankAccount {
 	public static BankAccount getSystemBankAccount(String bankName) {
 		BankAccount bank = null;
 		switch (bankName) {
-		case "CITIBank":
+		case "citibank":
 			bank = CITIBank;
 			break;
 		case "USBank":
@@ -36,6 +36,28 @@ public class SystemBankAccount {
 			bank = ChaseBank;
 			break;
 		case "WellsFargo":
+			bank = WellsFargo;
+			break;
+		}
+		return bank;
+	}
+	
+	public static BankAccount getSystemBankAccountInCapital(String bankName) {
+		BankAccount bank = null;
+		switch (bankName) {
+		case "CITIBANK":
+			bank = CITIBank;
+			break;
+		case "USBANK":
+			bank = USBank;
+			break;
+		case "BANKOFAMERICA":
+			bank = BankOfAmerica;
+			break;
+		case "CHASEBANK":
+			bank = ChaseBank;
+			break;
+		case "WELLSFARGO":
 			bank = WellsFargo;
 			break;
 		}
