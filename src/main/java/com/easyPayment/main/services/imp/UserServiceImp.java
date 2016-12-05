@@ -1,8 +1,9 @@
 package com.easyPayment.main.services.imp;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,10 @@ public class UserServiceImp implements UserService {
 		User result = userDao.getUser(user, needPassword);
 		return result;
 	}
-	
+
 	@Override
 	public List<User> getUserList(User user) {
-		checkNull( user);
+		checkNull(user);
 		List<User> result = userDao.getUserList(user);
 		return result;
 	}
@@ -70,7 +71,7 @@ public class UserServiceImp implements UserService {
 	@Override
 	public boolean updateUser(User user) {
 		user.setUpdateAt(DateTimeUtil.now());
-		checkNull( user);
+		checkNull(user);
 		// if change password
 		if (user.getPassword() != null) {
 			String salt = MD5Util.randomSalt();
@@ -140,26 +141,75 @@ public class UserServiceImp implements UserService {
 			}
 		}
 	}
-	
-	public void checkNull(User user){
-		if (user.getFirstName()!= null && user.getFirstName().equals("")) {
+
+	public void checkNull(User user) {
+		if (user.getFirstName() != null && user.getFirstName().equals("")) {
 			user.setFirstName(null);
 		}
 		if (user.getLastName() != null && user.getLastName().equals("")) {
 			user.setLastName(null);
 		}
-		if (user.getEmail() != null &&user.getEmail().equals("")) {
+		if (user.getEmail() != null && user.getEmail().equals("")) {
 			user.setEmail(null);
 		}
-		if (user.getPhone() != null &&user.getPhone().equals("")) {
+		if (user.getPhone() != null && user.getPhone().equals("")) {
 			user.setPhone(null);
 		}
-		if (user.getPassword() != null &&user.getPassword().equals("")) {
+		if (user.getPassword() != null && user.getPassword().equals("")) {
 			user.setPassword(null);
 		}
-		if (user.getId() != null &&user.getId().equals("")) {
+		if (user.getId() != null && user.getId().equals("")) {
 			user.setId(null);
 		}
+	}
+
+	@Override
+	public Map<String, Object> loginCheck(User user) {
+		// userStatue
+		int userStatue = 3;
+		String password = user.getPassword();
+		user.setPassword(null);
+		User result = getUserInfo(user, true);
+		if (result == null) {
+			userStatue = Status.CHECK_USER_DOESNT_EXIST;
+		} else {
+			if (password != null && !password.equals("")) {
+				String temp = MD5Util.MD5Encryption(password + result.getSalt());
+				if (temp.equals(result.getPassword())) {
+					userStatue = Status.CHECK_SUCCESS;
+				} else {
+					userStatue = Status.CHECK_WRONG_PASSWORD;
+				}
+			}
+		}
+
+		int check = userStatue;
+		boolean cresult = false;
+		String message = "";
+		switch (check) {
+		case Status.CHECK_SUCCESS:
+			cresult = true;
+			message = "login success";
+			break;
+		case Status.CHECK_WRONG_PASSWORD:
+			cresult = false;
+			result = null;
+			message = "wrong password";
+			break;
+		case Status.CHECK_USER_DOESNT_EXIST:
+			cresult = false;
+			result = null;
+			message = "user doesn't exist";
+			break;
+		}
+		result.setPassword(null);
+		result.setSalt(null);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user", result);
+		map.put("result", cresult);
+		map.put("message", message);
+
+		return map;
 	}
 
 }

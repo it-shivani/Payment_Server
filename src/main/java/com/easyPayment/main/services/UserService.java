@@ -1,6 +1,7 @@
 package com.easyPayment.main.services;
 
 import java.util.List;
+import java.util.Map;
 
 import com.easyPayment.main.domains.User;
 
@@ -14,16 +15,18 @@ public interface UserService {
 	 * @return
 	 */
 	public User getUserInfo(User user, boolean needPassword);
-	
+
 	/**
-	 * get user list 
+	 * get user list
+	 * 
 	 * @param user
 	 * @return
 	 */
 	public List<User> getUserList(User user);
-	
+
 	/**
 	 * check user
+	 * 
 	 * @param user
 	 * @return
 	 */
@@ -79,5 +82,13 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean deleteRelation(Integer user1, Integer user2);
+
+	/**
+	 * check login user
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public Map<String, Object> loginCheck(User user);
 
 }
